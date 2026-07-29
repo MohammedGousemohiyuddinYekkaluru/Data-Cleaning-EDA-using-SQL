@@ -6,3 +6,6 @@
 2. Standardize the data
 3. Null values or blank values
 4. Remove unnecessary columns or rows
+
+
+# Exploratory Data Analysis
