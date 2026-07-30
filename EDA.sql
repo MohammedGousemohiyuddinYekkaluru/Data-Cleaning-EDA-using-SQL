@@ -9,7 +9,7 @@ SELECT
     MAX(percentage_laid_off)
 FROM layoffs_staging2;
 
--- Companies who laif off the whole staff
+-- Companies who laid off the whole staff
 
 SELECT *
 FROM layoffs_staging2
@@ -101,3 +101,32 @@ SELECT
     total_off,
     SUM(total_off) OVER(ORDER BY `MONTH`) AS rolling_total
 FROM Rolling_Total;
+
+-- In which year how many employees a company laid off
+
+SELECT 
+	company,
+    YEAR(`date`),
+    SUM(total_laid_off)
+FROM layoffs_staging2
+GROUP BY company, YEAR(`date`)
+ORDER BY company;
+
+-- Ranking In each year which company laid off the most
+
+WITH Company_Year (company, years, total_laid_off) AS (
+SELECT 
+	company,
+    YEAR(`date`),
+    SUM(total_laid_off)
+FROM layoffs_staging2
+GROUP BY company, YEAR(`date`)
+), Company_Year_Rank AS 
+(SELECT
+	*,
+    DENSE_RANK() OVER(PARTITION BY years ORDER BY total_laid_off DESC) AS Ranking
+FROM Company_Year
+WHERE years IS NOT NULL)
+SELECT *
+FROM Company_Year_Rank
+WHERE Ranking <= 5;
