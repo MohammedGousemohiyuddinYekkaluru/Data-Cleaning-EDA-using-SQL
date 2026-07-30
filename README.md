@@ -8,4 +8,4 @@
 4. Remove unnecessary columns or rows
 
 
-# Exploratory Data Analysis
+# EDA - Exploratory Data Analysis
